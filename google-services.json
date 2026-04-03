@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "547925324774",
+    "project_id": "unifost-27c7f",
+    "storage_bucket": "unifost-27c7f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547925324774:android:ea221d20dcd691190c1c27",
+        "android_client_info": {
+          "package_name": "com.unifost.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547925324774-3v7h1bq6ojcuut62jvnfkji62gepov9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKM9QIWkWPDjO46zPl7WlD1wFDeLL9yAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547925324774-3v7h1bq6ojcuut62jvnfkji62gepov9r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
