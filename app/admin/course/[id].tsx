@@ -88,6 +88,7 @@ const CourseFormScreen = () => {
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <Text style={styles.title}>{isEditing ? 'Edit Course' : 'New Course'}</Text>
       {renderField('Title', 'title')}
+      {renderField('University', 'university')}
       {renderField('Short Description', 'shortDescription', true)}
       {renderField('Description', 'description', true)}
       {renderField('Category', 'category')}

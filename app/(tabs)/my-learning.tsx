@@ -9,16 +9,37 @@ import { CourseCard } from '@/components/feature/CourseCard';
 import { useRouter } from 'expo-router';
 import { Alert } from 'react-native';
 
+import { useEnrollments } from '@/contexts/EnrollmentContext';
+
 type Tab = 'active' | 'completed';
 
 export default function MyLearningScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>('active');
+  const { enrollments, loading } = useEnrollments();
 
-  // Hardcoded mock enrollment from our new Indian universities dataset
-  const enrolledCourses = CERTIFICATION_COURSES.slice(0, 2);
-  const completedCourses = CERTIFICATION_COURSES.slice(4, 5); // 1 course
+  // Filter courses based on enrollment status
+  const enrolledCourses = enrollments
+    .filter(e => !e.completed)
+    .map(e => {
+      const course = CERTIFICATION_COURSES.find(c => c.id === e.course_id);
+      return course ? { ...course, progress: e.progress || 0 } : null;
+    })
+    .filter(Boolean);
+
+  const completedCourses = enrollments
+    .filter(e => e.completed)
+    .map(e => CERTIFICATION_COURSES.find(c => c.id === e.course_id))
+    .filter(Boolean);
+
+  if (loading) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <Text>Loading your courses...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -55,8 +76,13 @@ export default function MyLearningScreen() {
         {activeTab === 'active' ? (
           enrolledCourses.length > 0 ? (
             enrolledCourses.map(course => (
-              <View key={course.id} style={styles.courseWrapper}>
-                <CourseCard course={course as any} variant="default" onPress={() => router.push(`/course/${course.id}` as any)} progress={0.45} />
+              <View key={course?.id} style={styles.courseWrapper}>
+                <CourseCard 
+                  course={course as any} 
+                  variant="default" 
+                  onPress={() => router.push(`/course/${course?.id}` as any)} 
+                  progress={course?.progress} 
+                />
               </View>
             ))
           ) : (
@@ -69,14 +95,14 @@ export default function MyLearningScreen() {
         ) : (
            completedCourses.length > 0 ? (
              completedCourses.map(course => (
-                <Pressable key={course.id} style={styles.certificateCard} onPress={() => Alert.alert('Certificate Download', `Your high resolution verified certificate for "${course.title}" is being generated...\nCheck your email shortly.`)}>
+                <Pressable key={course?.id} style={styles.certificateCard} onPress={() => Alert.alert('Certificate Download', `Your high resolution verified certificate for "${course?.title}" is being generated...\nCheck your email shortly.`)}>
                   <LinearGradient colors={['#ffffff', '#f8fafc']} style={StyleSheet.absoluteFillObject} />
                   <View style={styles.certIconBg}>
                     <MaterialIcons name="workspace-premium" size={32} color="#4f46e5" />
                   </View>
                   <View style={styles.certInfo}>
-                    <Text style={styles.certTitle}>{course.title}</Text>
-                    <Text style={styles.certUniversity}>{course.university}</Text>
+                    <Text style={styles.certTitle}>{course?.title}</Text>
+                    <Text style={styles.certUniversity}>{course?.university}</Text>
                     <Text style={styles.certLink}>Tap to Download</Text>
                   </View>
                   <MaterialIcons name="chevron-right" size={24} color="#4f46e5" />
@@ -98,7 +124,7 @@ export default function MyLearningScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Colors.background,
   },
   headerBackground: {
     paddingBottom: 40,

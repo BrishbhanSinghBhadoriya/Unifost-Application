@@ -47,13 +47,14 @@ export default function ForgotPasswordScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1, backgroundColor: Colors.background }}
     >
+      <StatusBar barStyle="dark-content" />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <LinearGradient
-          colors={[Colors.gradientStart, Colors.gradientEnd]}
+          colors={['#FFFFFF', '#F8FAFC']}
           style={[styles.header, { paddingTop: insets.top + 20 }]}
         >
           <Pressable onPress={() => router.back()} style={styles.backBtn}>
-            <Ionicons name="arrow-back" size={24} color="#fff" />
+            <Ionicons name="arrow-back" size={24} color={Colors.text} />
           </Pressable>
           <View style={styles.logoContainer}>
             <Text style={styles.appName}>Reset Password</Text>
@@ -105,58 +106,52 @@ export default function ForgotPasswordScreen() {
 
 const styles = StyleSheet.create({
   header: {
-    height: 180,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
+    paddingBottom: 40,
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
+    paddingHorizontal: Spacing.xl,
   },
   backBtn: {
-    position: 'absolute',
-    left: 20,
-    top: 40,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.surface,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   logoContainer: {
-    alignItems: 'center',
+    marginTop: 10,
   },
   appName: {
     fontSize: 28,
-    fontWeight: FontWeight.bold,
-    color: '#fff',
+    fontWeight: 'bold',
+    color: Colors.text,
+    marginBottom: 8,
   },
   tagline: {
-    fontSize: FontSize.sm,
-    color: 'rgba(255,255,255,0.8)',
-    marginTop: 4,
+    fontSize: 16,
+    color: Colors.textSecondary,
+    opacity: 0.9,
   },
   formContainer: {
-    flex: 1,
     paddingHorizontal: Spacing.xl,
-    paddingTop: Spacing.xl,
-    marginTop: -20,
-    backgroundColor: Colors.background,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
+    paddingTop: 32,
   },
   infoText: {
-    fontSize: FontSize.sm,
+    fontSize: 15,
     color: Colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: Spacing.xl,
-    lineHeight: 20,
+    lineHeight: 22,
+    marginBottom: 32,
   },
   inputGroup: {
-    marginBottom: Spacing.lg,
+    marginBottom: 32,
   },
   label: {
-    fontSize: FontSize.sm,
-    fontWeight: FontWeight.semibold,
+    fontSize: 14,
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 8,
     marginLeft: 4,
@@ -164,42 +159,45 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: Radius.md,
+    backgroundColor: Colors.surface,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    height: 56,
     borderWidth: 1,
     borderColor: Colors.border,
-    paddingHorizontal: 12,
-    height: 52,
   },
   inputIcon: {
-    marginRight: 10,
+    marginRight: 12,
   },
   input: {
     flex: 1,
-    fontSize: FontSize.base,
+    fontSize: 16,
     color: Colors.text,
   },
   resetBtn: {
-    backgroundColor: Colors.primary,
     height: 56,
-    borderRadius: Radius.md,
+    borderRadius: 16,
+    backgroundColor: Colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    ...Shadows.md,
-    marginTop: Spacing.md,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 6,
   },
   resetBtnText: {
     color: '#fff',
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.bold,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   footer: {
+    marginTop: 24,
     alignItems: 'center',
-    marginTop: Spacing.xl,
   },
   backToLogin: {
+    fontSize: 15,
     color: Colors.primary,
-    fontSize: FontSize.sm,
-    fontWeight: FontWeight.bold,
+    fontWeight: 'bold',
   },
 });

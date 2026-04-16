@@ -61,9 +61,12 @@ function RootLayoutNav() {
                 <Stack.Screen name="enquiry" options={{ headerShown: false }} />
                 <Stack.Screen name="notifications" options={{ headerShown: false }} />
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="course/[id]" options={{ title: 'Course Details', headerTransparent: true, headerTintColor: '#fff' }} />
+                <Stack.Screen name="course/[id]" options={{ headerShown: false }} />
                 <Stack.Screen name="video/[id]" options={{ title: 'Learning', headerShown: false }} />
                 <Stack.Screen name="certificate/[id]" options={{ title: 'Certificate', headerTitleAlign: 'center' }} />
+                <Stack.Screen name="profile-edit" options={{ presentation: 'modal', headerShown: false }} />
+                <Stack.Screen name="settings" options={{ headerShown: false }} />
+                <Stack.Screen name="help-center" options={{ headerShown: false }} />
                 <Stack.Screen name="admin" options={{ headerShown: false }} />
               </Stack>
             </ProgressProvider>

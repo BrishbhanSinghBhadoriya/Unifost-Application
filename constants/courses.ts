@@ -1,6 +1,7 @@
 export interface Video {
   id: string;
   title: string;
+  description?: string; // Added description
   duration: string;
   isFree: boolean;
   videoUrl: string;
@@ -15,6 +16,7 @@ export interface Module {
 export interface Course {
   id: string;
   title: string;
+  university?: string; // Added university
   shortDescription: string;
   description: string;
   category: string;
@@ -50,6 +52,7 @@ export const COURSES: Course[] = [
   {
     id: '1',
     title: 'Full Stack Web Development',
+    university: 'IIT Bombay', // Added demo university
     shortDescription: 'Master modern web development from frontend to backend.',
     description: 'This comprehensive course covers everything you need to become a professional full-stack web developer. You will learn HTML, CSS, JavaScript, React, Node.js, and more.',
     category: 'Web Development',
@@ -83,16 +86,44 @@ export const COURSES: Course[] = [
         id: 'm1',
         title: 'Introduction to Web Development',
         videos: [
-          { id: 'v1', title: 'Welcome to the Course', duration: '5:00', isFree: true, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-          { id: 'v2', title: 'How the Web Works', duration: '10:00', isFree: true, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+          { 
+            id: 'v1', 
+            title: 'Welcome to the Course', 
+            description: 'A brief introduction to the course and what you will learn.', // Added demo description
+            duration: '5:00', 
+            isFree: true, 
+            videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' 
+          },
+          { 
+            id: 'v2', 
+            title: 'How the Web Works', 
+            description: 'Understanding the basic architecture of the World Wide Web.', // Added demo description
+            duration: '10:00', 
+            isFree: true, 
+            videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' 
+          },
         ],
       },
       {
         id: 'm2',
         title: 'HTML & CSS Basics',
         videos: [
-          { id: 'v3', title: 'HTML5 Elements', duration: '15:00', isFree: false, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-          { id: 'v4', title: 'CSS3 Styling', duration: '20:00', isFree: false, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+          { 
+            id: 'v3', 
+            title: 'HTML5 Elements', 
+            description: 'Learning about the new elements introduced in HTML5.', // Added demo description
+            duration: '15:00', 
+            isFree: false, 
+            videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' 
+          },
+          { 
+            id: 'v4', 
+            title: 'CSS3 Styling', 
+            description: 'Advanced styling techniques using CSS3.', // Added demo description
+            duration: '20:00', 
+            isFree: false, 
+            videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' 
+          },
         ],
       },
     ],
@@ -104,6 +135,7 @@ export const COURSES: Course[] = [
   {
     id: '2',
     title: 'Data Science & Machine Learning',
+    university: 'IIM Ahmedabad', // Added demo university
     shortDescription: 'Learn data analysis, visualization, and ML models.',
     description: 'Dive deep into the world of data. Learn how to extract insights from data and build predictive models using Python and popular ML libraries.',
     category: 'Data Science',
@@ -137,8 +169,22 @@ export const COURSES: Course[] = [
         id: 'm1',
         title: 'Python for Data Science',
         videos: [
-          { id: 'v5', title: 'Introduction to Python', duration: '8:00', isFree: true, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-          { id: 'v6', title: 'NumPy and Pandas', duration: '12:00', isFree: false, videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+          { 
+            id: 'v5', 
+            title: 'Introduction to Python', 
+            description: 'Getting started with Python programming for data science.', // Added demo description
+            duration: '8:00', 
+            isFree: true, 
+            videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' 
+          },
+          { 
+            id: 'v6', 
+            title: 'NumPy and Pandas', 
+            description: 'Essential libraries for data manipulation in Python.', // Added demo description
+            duration: '12:00', 
+            isFree: false, 
+            videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4' 
+          },
         ],
       },
     ],

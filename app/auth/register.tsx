@@ -50,15 +50,16 @@ export default function RegisterScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
+      <StatusBar barStyle="dark-content" />
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <LinearGradient
-          colors={['#1e1b4b', '#4f46e5']}
+          colors={['#FFFFFF', '#F8FAFC']}
           style={[styles.headerGradient, { paddingTop: insets.top + 20 }]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
           <Pressable onPress={() => router.back()} style={styles.backBtn}>
-            <Ionicons name="arrow-back" size={24} color="#fff" />
+            <Ionicons name="arrow-back" size={24} color={Colors.text} />
           </Pressable>
           <View style={styles.headerGlass}>
             <Text style={styles.headerTitle}>Create Account</Text>
@@ -167,121 +168,108 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.background,
   },
   scrollContent: {
-    flexGrow: 1,
+    paddingBottom: 40,
   },
   headerGradient: {
-    height: 240,
-    justifyContent: 'center',
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
+    paddingBottom: 40,
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
+    paddingHorizontal: Spacing.xl,
   },
   backBtn: {
-    position: 'absolute',
-    left: 20,
-    top: 50,
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: Colors.surface,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 10,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   headerGlass: {
-    alignItems: 'center',
-    marginTop: 20,
-    paddingHorizontal: 20,
+    marginTop: 10,
   },
   headerTitle: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#ffffff',
-    letterSpacing: -0.5,
+    color: Colors.text,
+    marginBottom: 8,
   },
   headerSubtitle: {
-    fontSize: FontSize.base,
-    color: 'rgba(255,255,255,0.85)',
-    marginTop: 6,
+    fontSize: 16,
+    color: Colors.textSecondary,
+    opacity: 0.9,
   },
   formSection: {
-    flex: 1,
     paddingHorizontal: Spacing.xl,
-    paddingTop: 40,
-    marginTop: -40,
-    backgroundColor: '#ffffff',
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -5 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 5,
+    paddingTop: 32,
   },
   inputContainer: {
     marginBottom: 20,
   },
   inputLabel: {
-    fontSize: FontSize.sm,
+    fontSize: 14,
     fontWeight: '600',
-    color: '#4b5563',
+    color: Colors.text,
     marginBottom: 8,
     marginLeft: 4,
   },
   inputField: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f3f4f6',
+    backgroundColor: Colors.surface,
     borderRadius: 16,
     paddingHorizontal: 16,
-    height: 60,
+    height: 56,
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: Colors.border,
   },
   iconStyle: {
     marginRight: 12,
   },
   textInput: {
     flex: 1,
-    fontSize: FontSize.base,
-    color: '#1f2937',
-    fontWeight: '500',
+    fontSize: 16,
+    color: Colors.text,
   },
   eyeBtn: {
     padding: 8,
   },
   primaryBtn: {
-    height: 60,
+    height: 56,
     borderRadius: 16,
+    overflow: 'hidden',
+    marginTop: 12,
+    marginBottom: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#4f46e5',
+    shadowColor: Colors.primary,
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 12,
-    elevation: 5,
+    elevation: 6,
   },
   btnText: {
-    color: '#ffffff',
-    fontSize: FontSize.lg,
+    color: '#fff',
+    fontSize: 18,
     fontWeight: 'bold',
-    letterSpacing: 0.5,
   },
   footerRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 32,
-    paddingBottom: 40,
+    alignItems: 'center',
   },
   footerText: {
-    color: '#6b7280',
-    fontSize: FontSize.base,
+    fontSize: 15,
+    color: Colors.textSecondary,
   },
   footerLink: {
-    color: '#4f46e5',
-    fontSize: FontSize.base,
+    fontSize: 15,
+    color: Colors.primary,
     fontWeight: 'bold',
   },
 });

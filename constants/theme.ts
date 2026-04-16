@@ -1,15 +1,15 @@
 export const Colors = {
-  primary: '#4F46E5',
-  secondary: '#9333EA',
-  gradientStart: '#4F46E5',
-  gradientEnd: '#9333EA',
-  accent: '#F59E0B',
-  background: '#F9FAFB',
-  surface: '#FFFFFF',
-  card: '#FFFFFF',
-  text: '#1F2937',
-  textSecondary: '#6B7280',
-  textLight: '#9CA3AF',
+  primary: '#6C63FF', // Purple
+  secondary: '#00D4FF', // Cyan
+  accent: '#00D4FF',
+  background: '#FFFFFF', // Pure White
+  surface: '#F8FAFC', // Very Light Gray
+  card: '#FFFFFF', // Card background
+  glass: 'rgba(0, 0, 0, 0.05)', // Glass for light background
+  glassBorder: 'rgba(0, 0, 0, 0.1)',
+  text: '#000000', // Black
+  textSecondary: '#000000', // Black
+  textLight: '#000000', // Black
   white: '#FFFFFF',
   success: '#10B981',
   successLight: '#10B98114',
@@ -18,9 +18,15 @@ export const Colors = {
   warning: '#F59E0B',
   warningLight: '#F59E0B14',
   
-  secondaryLight: '#9333EA14',
-  border: '#E5E7EB',
-  borderLight: '#F3F4F6',
+  gradientStart: '#6C63FF',
+  gradientEnd: '#3B32FF',
+  darkGradient: ['#F8FAFC', '#F1F5F9'] as const,
+  primaryGradient: ['#6C63FF', '#3B32FF'] as const,
+  accentGradient: ['#00D4FF', '#0090FF'] as const,
+  
+  secondaryLight: '#00D4FF14',
+  border: '#E2E8F0',
+  borderLight: '#F1F5F9',
 };
 
 export const FontSize = {
@@ -31,8 +37,15 @@ export const FontSize = {
   lg: 18,
   xl: 20,
   xxl: 24,
-  '2xl': 24,
-  '3xl': 30,
+  '2xl': 28, // Updated H1
+  '3xl': 32,
+};
+
+export const FontFamily = {
+  heading: 'Poppins-Bold',
+  subheading: 'Poppins-SemiBold',
+  body: 'Inter-Regular',
+  bodyMedium: 'Inter-Medium',
 };
 
 export const FontWeight = {

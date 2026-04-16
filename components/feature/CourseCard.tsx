@@ -2,10 +2,17 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { Colors, FontSize, FontWeight, Radius, Shadows, Spacing } from '@/constants/theme';
 import { CertificationCourse } from '@/constants/indianCourses';
 import { ProgressBar } from './ProgressBar';
+import Animated, { 
+  useAnimatedStyle, 
+  useSharedValue, 
+  withSpring,
+} from 'react-native-reanimated';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface CourseCardProps {
   course: CertificationCourse;
@@ -24,51 +31,69 @@ export const CourseCard: React.FC<CourseCardProps> = ({
   variant = 'default',
   style,
 }) => {
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: withSpring(scale.value) }],
+  }));
+
+  const handlePressIn = () => (scale.value = 0.98);
+  const handlePressOut = () => (scale.value = 1);
+
   if (variant === 'featured') {
     return (
-      <Pressable
+      <AnimatedPressable
         onPress={onPress}
-        style={({ pressed }) => [
-          styles.featuredContainer,
-          pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
-          style,
-        ]}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={[styles.featuredContainer, animatedStyle, style]}
       >
-        <Image source={{ uri: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop' }} style={styles.featuredImage} contentFit="cover" transition={300} />
+        <Image 
+          source={{ uri: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop' }} 
+          style={styles.featuredImage} 
+          contentFit="cover" 
+          transition={300} 
+        />
         <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.8)']}
+          colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
           style={styles.featuredGradient}
         />
         <View style={styles.featuredContent}>
-          <View style={styles.categoryBadge}>
-            <Text style={styles.categoryText}>{course.category}</Text>
+          <View style={styles.badgeRow}>
+            <View style={[styles.categoryBadge, { backgroundColor: Colors.primary + '30' }]}>
+              <Text style={styles.categoryText}>{course.category}</Text>
+            </View>
           </View>
           <Text style={styles.featuredTitle} numberOfLines={2}>
             {course.title}
           </Text>
           <View style={styles.featuredFooter}>
             <View style={styles.ratingRow}>
-              <Ionicons name="star" size={12} color={Colors.accent} />
+              <Ionicons name="star" size={14} color="#FFD700" />
               <Text style={styles.featuredRatingText}>4.8</Text>
+              <Text style={styles.studentCount}> (1.2k)</Text>
             </View>
-            <Text style={styles.featuredPrice} numberOfLines={1}>{course.fees}</Text>
+            <Text style={styles.featuredPrice}>{course.fees}</Text>
           </View>
         </View>
-      </Pressable>
+      </AnimatedPressable>
     );
   }
 
   if (variant === 'horizontal') {
     return (
-      <Pressable
+      <AnimatedPressable
         onPress={onPress}
-        style={({ pressed }) => [
-          styles.horizontalContainer,
-          pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
-          style,
-        ]}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={[styles.horizontalContainer, animatedStyle, style]}
       >
-        <Image source={{ uri: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop' }} style={styles.horizontalImage} contentFit="cover" transition={300} />
+        <Image 
+          source={{ uri: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=1974&auto=format&fit=crop' }} 
+          style={styles.horizontalImage} 
+          contentFit="cover" 
+          transition={300} 
+        />
         <View style={styles.horizontalContent}>
           <Text style={styles.title} numberOfLines={1}>
             {course.title}
@@ -78,266 +103,335 @@ export const CourseCard: React.FC<CourseCardProps> = ({
           </Text>
           <View style={styles.horizontalFooter}>
             <View style={styles.ratingRow}>
-              <Ionicons name="star" size={12} color={Colors.accent} />
+              <Ionicons name="star" size={12} color="#FFD700" />
               <Text style={styles.ratingText}>4.7</Text>
             </View>
-            <Text style={styles.price} numberOfLines={1}>{course.fees}</Text>
+            <Text style={styles.price}>{course.fees}</Text>
           </View>
         </View>
-      </Pressable>
+      </AnimatedPressable>
     );
   }
 
   return (
-    <Pressable
+    <AnimatedPressable
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.container,
-        pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
-        style,
-      ]}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      style={[styles.container, animatedStyle, style]}
     >
-      <Image source={{ uri: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop' }} style={styles.image} contentFit="cover" transition={300} />
-      <View style={styles.content}>
-        <View style={styles.headerRow}>
-          <View style={styles.categoryBadge}>
-            <Text style={styles.categoryText}>{course.category}</Text>
-          </View>
-          <View style={styles.ratingRow}>
-            <Ionicons name="star" size={14} color={Colors.accent} />
-            <Text style={styles.ratingText}>4.9</Text>
+      <View style={styles.imageWrapper}>
+        <Image 
+          source={{ uri: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop' }} 
+          style={styles.image} 
+          contentFit="cover" 
+          transition={300} 
+        />
+        <View style={styles.imageOverlay}>
+          <View style={styles.categoryBadgeSmall}>
+            <Text style={styles.categoryTextSmall}>{course.category}</Text>
           </View>
         </View>
-
+      </View>
+      <View style={styles.content}>
         <Text style={styles.title} numberOfLines={2}>
           {course.title}
         </Text>
+        
+        <Text style={styles.universityText} numberOfLines={1}>
+          {course.university}
+        </Text>
 
-        <View style={styles.footer}>
+        <View style={styles.statsRow}>
           <View style={styles.infoRow}>
-            <MaterialIcons name="schedule" size={14} color={Colors.textSecondary} />
-            <Text style={styles.infoText}>{course.duration}</Text>
+            <Ionicons name="star" size={14} color="#FFD700" />
+            <Text style={styles.ratingText}>4.9</Text>
           </View>
           <View style={styles.infoRow}>
-            <MaterialIcons name="people-outline" size={14} color={Colors.textSecondary} />
-            <Text style={styles.infoText}>2,400+ Students</Text>
+            <Ionicons name="people" size={14} color={Colors.textSecondary} />
+            <Text style={styles.infoText}>2.4k</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <MaterialIcons name="schedule" size={14} color={Colors.textSecondary} />
+            <Text style={styles.infoText}>{course.duration.split(' ')[0]}</Text>
           </View>
         </View>
 
-        <View style={styles.priceRow}>
+        <View style={styles.cardFooter}>
           {progress !== undefined ? (
-            <View style={{ flex: 1 }}>
+            <View style={styles.progressContainer}>
               <View style={styles.progressHeader}>
                 <Text style={styles.progressLabel}>Progress</Text>
                 <Text style={styles.progressPct}>{Math.round(progress * 100)}%</Text>
               </View>
-              <ProgressBar progress={progress} height={4} />
+              <ProgressBar progress={progress} height={6} />
             </View>
           ) : (
-            <>
-              <Text style={styles.price} numberOfLines={1}>{course.fees}</Text>
+            <View style={styles.footerContent}>
+              <View style={styles.priceContainer}>
+                <Text style={styles.priceLabel}>Course Fee</Text>
+                <Text style={styles.priceText}>{course.fees}</Text>
+              </View>
+              
               {isEnrolled ? (
                 <View style={styles.enrolledBadge}>
                   <Text style={styles.enrolledText}>Enrolled</Text>
                 </View>
               ) : (
-                <View style={styles.enrollButton}>
-                  <Text style={styles.enrollButtonText}>Enroll Now</Text>
-                </View>
+                <LinearGradient
+                  colors={Colors.primaryGradient}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.viewDetailsButton}
+                >
+                  <Text style={styles.viewDetailsText}>View Details</Text>
+                </LinearGradient>
               )}
-            </>
+            </View>
           )}
         </View>
       </View>
-    </Pressable>
+    </AnimatedPressable>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.card,
-    borderRadius: Radius.lg,
-    marginVertical: Spacing.sm,
-    marginHorizontal: Spacing.md,
-    ...Shadows.md,
+    borderRadius: Radius.xl,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: Colors.border,
+    marginBottom: Spacing.md,
+    marginHorizontal: Spacing.md,
+  },
+  imageWrapper: {
+    height: 160,
+    width: '100%',
+    position: 'relative',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  imageOverlay: {
+    position: 'absolute',
+    top: 12,
+    left: 12,
+  },
+  categoryBadgeSmall: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: Radius.full,
+  },
+  categoryTextSmall: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  content: {
+    padding: 16,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: Colors.text,
+    lineHeight: 24,
+    marginBottom: 6,
+  },
+  universityText: {
+    fontSize: 14,
+    color: Colors.primary,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  statsRow: {
     flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+    marginBottom: 16,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  ratingText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: Colors.text,
+  },
+  infoText: {
+    fontSize: 13,
+    color: Colors.textSecondary,
+  },
+  cardFooter: {
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+    paddingTop: 16,
+  },
+  footerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  priceContainer: {
+    flex: 1,
+  },
+  priceLabel: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+    marginBottom: 2,
+  },
+  priceText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: Colors.text,
+  },
+  viewDetailsButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 12,
+  },
+  viewDetailsText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  enrolledBadge: {
+    backgroundColor: Colors.successLight,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: Colors.success,
+  },
+  enrolledText: {
+    color: Colors.success,
+    fontSize: 13,
+    fontWeight: 'bold',
+  },
+  progressContainer: {
+    width: '100%',
+  },
+  progressHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  progressLabel: {
+    fontSize: 13,
+    color: Colors.textSecondary,
+  },
+  progressPct: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: Colors.primary,
   },
   featuredContainer: {
-    width: 260,
-    height: 180,
-    borderRadius: Radius.lg,
-    marginRight: Spacing.md,
+    width: 280,
+    height: 340,
+    borderRadius: 24,
     overflow: 'hidden',
-    backgroundColor: Colors.card,
-    ...Shadows.md,
+    marginRight: 16,
+    backgroundColor: '#000',
   },
   featuredImage: {
     width: '100%',
     height: '100%',
   },
   featuredGradient: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '60%',
   },
   featuredContent: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    padding: Spacing.md,
+    padding: 20,
+  },
+  badgeRow: {
+    marginBottom: 8,
+  },
+  categoryBadge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  categoryText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   featuredTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
     color: '#fff',
-    fontSize: FontSize.base,
-    fontWeight: FontWeight.bold,
-    marginTop: 8,
+    marginBottom: 12,
+    lineHeight: 28,
   },
   featuredFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 8,
-  },
-  featuredRatingText: {
-    color: '#fff',
-    fontSize: FontSize.xs,
-    marginLeft: 4,
-  },
-  featuredPrice: {
-    color: '#fff',
-    fontSize: FontSize.base,
-    fontWeight: FontWeight.bold,
-  },
-  horizontalContainer: {
-    flexDirection: 'row',
-    backgroundColor: Colors.card,
-    borderRadius: Radius.lg,
-    padding: Spacing.sm,
-    marginBottom: Spacing.sm,
-    ...Shadows.sm,
-    alignItems: 'center',
-  },
-  horizontalImage: {
-    width: 80,
-    height: 80,
-    borderRadius: Radius.md,
-  },
-  horizontalContent: {
-    flex: 1,
-    marginLeft: Spacing.md,
-  },
-  horizontalFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  image: {
-    width: 120,
-    height: '100%',
-  },
-  content: {
-    flex: 1,
-    padding: Spacing.md,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Spacing.xs,
-  },
-  categoryBadge: {
-    backgroundColor: Colors.primary + '20',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: Radius.sm,
-    alignSelf: 'flex-start',
-  },
-  categoryText: {
-    color: Colors.primary,
-    fontSize: FontSize.xs,
-    fontWeight: FontWeight.medium,
   },
   ratingRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  ratingText: {
+  featuredRatingText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
     marginLeft: 4,
-    fontSize: FontSize.sm,
-    fontWeight: FontWeight.semibold,
-    color: Colors.text,
   },
-  title: {
-    fontSize: FontSize.base,
-    fontWeight: FontWeight.bold,
-    color: Colors.text,
-    marginBottom: Spacing.sm,
+  studentCount: {
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: 12,
+  },
+  featuredPrice: {
+    color: Colors.secondary,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  horizontalContainer: {
+    flexDirection: 'row',
+    backgroundColor: Colors.card,
+    borderRadius: 20,
+    padding: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  horizontalImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 16,
+  },
+  horizontalContent: {
+    flex: 1,
+    marginLeft: 16,
+    justifyContent: 'space-between',
   },
   instructorName: {
-    fontSize: FontSize.xs,
+    fontSize: 13,
     color: Colors.textSecondary,
-    marginBottom: 4,
+    marginTop: 4,
   },
-  footer: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: Spacing.md,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  infoText: {
-    marginLeft: 4,
-    fontSize: FontSize.xs,
-    color: Colors.textSecondary,
-  },
-  priceRow: {
+  horizontalFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  progressHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  progressLabel: {
-    fontSize: 10,
-    color: Colors.textSecondary,
-    fontWeight: FontWeight.medium,
-  },
-  progressPct: {
-    fontSize: 10,
-    color: Colors.primary,
-    fontWeight: FontWeight.bold,
   },
   price: {
-    fontSize: FontSize.lg,
-    fontWeight: FontWeight.bold,
+    fontSize: 16,
+    fontWeight: 'bold',
     color: Colors.primary,
-  },
-  enrollButton: {
-    backgroundColor: Colors.primary,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: Radius.base,
-  },
-  enrollButtonText: {
-    color: '#fff',
-    fontSize: FontSize.xs,
-    fontWeight: FontWeight.bold,
-  },
-  enrolledBadge: {
-    backgroundColor: Colors.success + '20',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: Radius.base,
-  },
-  enrolledText: {
-    color: Colors.success,
-    fontSize: FontSize.xs,
-    fontWeight: FontWeight.bold,
   },
 });

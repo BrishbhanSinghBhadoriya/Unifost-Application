@@ -10,13 +10,15 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
-import { Colors, FontSize, FontWeight, Radius, Shadows, Spacing } from '@/constants/theme';
+import { Feather, Ionicons } from '@expo/vector-icons';
+import { Colors, FontSize, Radius, Spacing } from '@/constants/theme';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -44,229 +46,240 @@ export default function LoginScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
-    >
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <LinearGradient
-          colors={['#1e1b4b', '#4f46e5']}
-          style={[styles.headerGradient, { paddingTop: insets.top + 40 }]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <View style={styles.headerGlass}>
-            <View style={styles.logoIconBg}>
-              <MaterialIcons name="school" size={48} color="#4f46e5" />
-            </View>
-            <Text style={styles.headerTitle}>Unifost</Text>
-            <Text style={styles.headerTitle}>Welcome Back</Text>
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+          <LinearGradient
+            colors={['#FFFFFF', '#F8FAFC']}
+            style={[styles.header, { paddingTop: insets.top + 60 }]}
+          >
+            <Animated.View entering={FadeInUp.duration(800)} style={styles.logoContainer}>
+              <View style={styles.logoCircle}>
+                <Ionicons name="school" size={40} color={Colors.primary} />
+              </View>
+              <Text style={styles.brandName}>UNIFOST</Text>
+              <Text style={styles.tagline}>Elevate Your Learning Journey</Text>
+            </Animated.View>
+          </LinearGradient>
 
-          </View>
-        </LinearGradient>
+          <Animated.View entering={FadeInDown.delay(200).duration(800)} style={styles.formContainer}>
+            <Text style={styles.welcomeTitle}>Welcome Back</Text>
+            <Text style={styles.welcomeSubtitle}>Sign in to continue your education</Text>
 
-        <View style={styles.formSection}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Email Address</Text>
-            <View style={styles.inputField}>
-              <MaterialIcons name="email" size={20} color="#9ca3af" style={styles.iconStyle} />
-              <TextInput
-                style={styles.textInput}
-                placeholder="hello@example.com"
-                placeholderTextColor="#9ca3af"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Password</Text>
-            <View style={styles.inputField}>
-              <MaterialIcons name="lock-outline" size={20} color="#9ca3af" style={styles.iconStyle} />
-              <TextInput
-                style={styles.textInput}
-                placeholder="••••••••"
-                placeholderTextColor="#9ca3af"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
-              />
-              <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeBtn}>
-                <Ionicons
-                  name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                  size={20}
-                  color="#9ca3af"
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Email Address</Text>
+              <View style={styles.inputWrapper}>
+                <Feather name="mail" size={18} color={Colors.textSecondary} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="name@example.com"
+                  placeholderTextColor={Colors.textSecondary}
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
                 />
+              </View>
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Password</Text>
+              <View style={styles.inputWrapper}>
+                <Feather name="lock" size={18} color={Colors.textSecondary} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="••••••••"
+                  placeholderTextColor={Colors.textSecondary}
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                />
+                <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.passwordToggle}>
+                  <Feather name={showPassword ? "eye-off" : "eye"} size={18} color={Colors.textSecondary} />
+                </Pressable>
+              </View>
+            </View>
+
+            <Pressable onPress={() => router.push('/auth/forgot-password')} style={styles.forgotPassword}>
+              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            </Pressable>
+
+            <Pressable 
+              onPress={handleLogin} 
+              disabled={loading}
+            >
+              <LinearGradient
+                colors={['#6C63FF', '#3B32FF']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.loginButton}
+              >
+                {loading ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <View style={styles.loginGradient}>
+                    <Text style={styles.loginButtonText}>Sign In</Text>
+                  </View>
+                )}
+              </LinearGradient>
+            </Pressable>
+
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>New to Unifost? </Text>
+              <Pressable onPress={() => router.push('/auth/register')}>
+                <Text style={styles.footerLink}>Create Account</Text>
               </Pressable>
             </View>
-          </View>
-
-          <Pressable onPress={() => router.push('/auth/forgot-password')} style={styles.forgotBtn}>
-            <Text style={styles.forgotText}>Forgot Password?</Text>
-          </Pressable>
-
-          <Pressable
-            onPress={handleLogin}
-            disabled={loading}
-          >
-            <LinearGradient
-               colors={['#4f46e5', '#3730a3']}
-               style={[styles.primaryBtn, { opacity: loading ? 0.7 : 1 }]}
-               start={{ x: 0, y: 0 }}
-               end={{ x: 1, y: 0 }}
-            >
-              {loading ? (
-                 <ActivityIndicator color="#ffffff" />
-              ) : (
-                <Text style={styles.btnText}>Sign In securely</Text>
-              )}
-            </LinearGradient>
-          </Pressable>
-
-          <View style={styles.footerRow}>
-            <Text style={styles.footerText}>Don't have an account? </Text>
-            <Pressable onPress={() => router.push('/auth/register')}>
-              <Text style={styles.footerLink}>Sign Up</Text>
-            </Pressable>
-          </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          </Animated.View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: Colors.background,
   },
   scrollContent: {
     flexGrow: 1,
   },
-  headerGradient: {
-    height: 340,
+  header: {
+    paddingBottom: 60,
     alignItems: 'center',
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
   },
-  headerGlass: {
+  logoContainer: {
     alignItems: 'center',
-    paddingTop: 10,
   },
-  logoIconBg: {
-    width: 88,
-    height: 88,
-    backgroundColor: '#ffffff',
-    borderRadius: 24,
+  logoCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: Colors.surface,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    shadowColor: Colors.primary,
     shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.15,
-    shadowRadius: 15,
-    elevation: 8,
-    marginBottom: 20,
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 10,
   },
-  headerTitle: {
+  brandName: {
     fontSize: 32,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    letterSpacing: -0.5,
+    fontWeight: '900',
+    color: Colors.text,
+    letterSpacing: 2,
   },
-  headerSubtitle: {
-    fontSize: FontSize.base,
-    color: 'rgba(255,255,255,0.85)',
-    marginTop: 6,
+  tagline: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    marginTop: 4,
+    fontWeight: '500',
   },
-  formSection: {
+  formContainer: {
     flex: 1,
+    backgroundColor: Colors.background,
+    marginTop: -30,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
     paddingHorizontal: Spacing.xl,
     paddingTop: 40,
-    marginTop: -40,
-    backgroundColor: '#ffffff',
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -5 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 5,
   },
-  inputContainer: {
-    marginBottom: 24,
+  welcomeTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: Colors.text,
+    marginBottom: 8,
+  },
+  welcomeSubtitle: {
+    fontSize: 16,
+    color: Colors.textSecondary,
+    marginBottom: 32,
+  },
+  inputGroup: {
+    marginBottom: 20,
   },
   inputLabel: {
-    fontSize: FontSize.sm,
+    fontSize: 14,
     fontWeight: '600',
-    color: '#4b5563',
+    color: Colors.text,
     marginBottom: 8,
     marginLeft: 4,
   },
-  inputField: {
+  inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f3f4f6',
+    backgroundColor: Colors.surface,
     borderRadius: 16,
     paddingHorizontal: 16,
-    height: 60,
+    height: 56,
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: Colors.border,
   },
-  iconStyle: {
+  inputIcon: {
     marginRight: 12,
   },
-  textInput: {
+  input: {
     flex: 1,
-    fontSize: FontSize.base,
-    color: '#1f2937',
-    fontWeight: '500',
+    color: Colors.text,
+    fontSize: 16,
   },
-  eyeBtn: {
+  passwordToggle: {
     padding: 8,
   },
-  forgotBtn: {
+  forgotPassword: {
     alignSelf: 'flex-end',
     marginBottom: 32,
-    marginTop: -8,
   },
-  forgotText: {
-    color: '#4f46e5',
-    fontSize: FontSize.sm,
+  forgotPasswordText: {
+    color: Colors.primary,
     fontWeight: '600',
+    fontSize: 14,
   },
-  primaryBtn: {
-    height: 60,
+  loginButton: {
+    height: 56,
     borderRadius: 16,
+    overflow: 'hidden',
+    marginBottom: 24,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  loginGradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#4f46e5',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 5,
   },
-  btnText: {
-    color: '#ffffff',
-    fontSize: FontSize.lg,
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 18,
     fontWeight: 'bold',
-    letterSpacing: 0.5,
   },
-  footerRow: {
+  footer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 32,
-    paddingBottom: 40,
+    alignItems: 'center',
+    marginBottom: 40,
   },
   footerText: {
-    color: '#6b7280',
-    fontSize: FontSize.base,
+    color: Colors.textSecondary,
+    fontSize: 15,
   },
   footerLink: {
-    color: '#4f46e5',
-    fontSize: FontSize.base,
+    color: Colors.primary,
+    fontSize: 15,
     fontWeight: 'bold',
   },
 });

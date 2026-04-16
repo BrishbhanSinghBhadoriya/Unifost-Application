@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { initializeAuth, getAuth, Auth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // REPLACE THESE WITH YOUR ACTUAL FIREBASE PROJECT CREDENTIALS
@@ -14,6 +15,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 // Fix for React Native persistence
 let auth: Auth;
@@ -26,4 +28,4 @@ try {
   auth = getAuth(app);
 }
 
-export { auth };
+export { auth, db };
