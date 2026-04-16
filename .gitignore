@@ -2,4 +2,5 @@ node_modules/
 .expo/
 build/
 dist/
+GoogleService-info.plist/
 .env
